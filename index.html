@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나만의 마법 매거진</title>
+    <style>
+        /* 1. 기본 설정 및 테마 변수 */
+        :root {
+            --bg-color: #f4f4f0;
+            --text-color: #222;
+            --point-color: #e11d48;
+            --border-color: #333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Pretendard', 'Georgia', serif; background-color: var(--bg-color); color: var(--text-color); padding: 20px; }
+
+        /* =========================================
+           [실습 1] CSS Grid 메인 레이아웃 만들기
+           ========================================= */
+        .magazine-layout {
+            max-width: 1200px;
+            margin: 0 auto;
+            border: 4px solid var(--border-color);
+            padding: 20px;
+            
+            /* TODO 1: 여기를 Grid로 만들고, 가로를 3등분(1fr 2fr 1fr) 하세요. 간격은 20px! */
+            display:grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap:20px;
+
+        }
+
+        header {
+            /* TODO 2: 헤더가 첫 칸부터 끝 칸까지 전체 너비를 차지하게 하세요. */
+            grid-column: 1/-1;
+            text-align: center;
+            border-bottom: 4px solid var(--border-color);
+            padding-bottom: 20px; margin-bottom: 20px;
+        }
+        header h1 { font-size: 3rem; font-weight: 900; }
+        
+        aside { padding: 10px; }
+        main { border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); padding: 0 20px; }
+
+        /* =========================================
+           [실습 2] 내부 기사 카드 Grid 배열
+           ========================================= */
+        .article-grid {
+            /* TODO 3: 메인 영역 내부 기사들도 Grid로 만드세요 (1fr 1fr 2단 구성, 간격 15px) */
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap:15px;
+
+        }
+
+        /* 기사 카드 스타일 및 Transition (마우스 오버 효과) */
+        .magic-card {
+            border-bottom: 1px solid #ccc; padding-bottom: 15px; overflow: hidden;
+            /* TODO 4: 마우스를 올렸을 때 부드럽게 위로 살짝 떠오르도록 Transition과 transform을 추가해보세요. */
+            transform: tranform 0.3s ease,box-shadow 0.3s ease;
+            cursor: pointer;
+            .magic-card:hover{
+                transform:translateY(-10px);
+            }
+        }
+        .magic-card img { width: 100%; height: 180px; object-fit: cover; }
+
+        /* =========================================
+           [실습 3] @keyframes 애니메이션 만들기
+           ========================================= */
+        .ticker-wrap { width: 100%; overflow: hidden; background: var(--border-color); color: #fff; padding: 10px 0; margin-bottom: 20px; }
+        .ticker-move {
+            display: inline-block; white-space: nowrap;
+            /* TODO 5: 아래 만든 slide-left 애니메이션을 10초 동안 무한 반복(infinite) 선형(linear)으로 적용하세요. */
+            animation: slide-left 10s linear infinite;
+        }
+        
+        /* 텍스트가 흘러가는 애니메이션 */
+        @keyframes slide-left {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* NEW 뱃지 깜빡임 애니메이션 */
+        .badge-new {
+            display: inline-block; background: var(--point-color); color: white; padding: 2px 8px; font-size: 0.8rem; border-radius: 12px; margin-bottom: 10px;
+            /* TODO 6: 여기에 직접 새로운 @keyframes를 만들어 적용해보세요! (예: 둥둥 뜨기, 깜빡이기) */
+            animation:blink 1s step-end infinite;
+            @keyframe blink{
+                0%, 100%{opacity: 1;}
+                50{opacity:0;}
+            }
+        }
+
+        /* 반응형 모바일 설정 */
+        @media (max-width: 800px) {
+            .magazine-layout { grid-template-columns: 1fr; }
+            header { grid-column: 1; }
+            main { border: none; padding: 0; margin: 20px 0; }
+            .article-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="magazine-layout">
+        <header>
+            <h1>나만의 매거진 제목</h1>
+            <p>Vol. 1 | 2026. 04. XX | 내가 직접 큐레이션한 소식</p>
+        </header>
+
+        <!-- 흘러가는 속보 -->
+        <div class="ticker-wrap" style="grid-column: 1 / -1;">
+            <div class="ticker-move">🔥 [속보] 중간고사 대비 프론트엔드 핵심 요약! · 내가 좋아하는 최애 등극 · 오늘 저녁 메뉴 추천 🔥</div>
+        </div>
+
+        <aside>
+            <h2 style="border-bottom: 2px solid var(--point-color); margin-bottom: 15px;">Profile</h2>
+            <div style="background: #fff; padding: 15px; border: 1px solid #ddd;">
+                <h4>편집장의 말</h4>
+                <p style="font-size: 0.9rem; color: #666;">26학번 배준서입니다 제가 소개하고 싶은 매거진 주제는 경제 매거진입니다 최근 경제 뉴스가 많이 나오고 있는 추세여서 선정했습니다.</p>
+            </div>
+        </aside>
+
+        <main>
+            <div class="article-grid">
+                <!-- 기사 카드 1 -->
+                <article class="magic-card">
+                    <span class="badge-new">NEW</span>
+                    <img src="https://image.zdnet.co.kr/2026/03/29/d4c12332cf107806b1c15614aa632f69.jpg" alt="="
+                    <h3 style="font-size: 1.1rem; margin: 10px 0;">석유 가격 32% 급등…생산자물가지수 3년 11개월만에 최고치</h3>
+                    <p style="font-size: 0.9rem; color: #555;">2026년 3월 생산자물가지수는 전월 대비 1.6% 상승해 약 3년 11개월 만에 최대 상승폭 기록 상승 원인은 중동 사태로 인한 국제유가 상승 → 석탄·석유제품 가격 급등</p>
+                </article>
+
+                <!-- 기사 카드 2 -->
+                <article class="magic-card">
+                    <span class="badge-new" style="background:#3b82f6;">HOT</span>
+                    <img src="data:image/jpeg;base64,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" alt="살목지">
+                    <h3 style="font-size: 1.1rem; margin: 10px 0;">김혜윤·이종원 '살목지', 160만 관객 돌파…손익분기점 2배 달성</h3>
+                    <p style="font-size: 0.9rem; color: #555;">대작 및 신작들의 공세에도 불구하고 15일 연속 박스 오피스 1위 유지....</p>
+                </article>
+            </div>
+        </main>
+
+        <aside>
+            <h2 style="border-bottom: 2px solid var(--point-color); margin-bottom: 15px;">Ad</h2>
+            <div style="background-image: url(data:image/jpeg;base64,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); color: #fff; height: 250px; display: flex; align-items: center; justify-content: center; text-align: center;">
+                
+            </div>
+        </aside>
+    </div>
+
+</body>
+</html>
